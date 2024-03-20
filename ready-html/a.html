@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firefly Scroll Animation</title>
+    <style>
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 200%; /* Ensure enough space to scroll */
+  overflow-x: hidden;
+}
+
+.section {
+  height: 100vh; /* 100% of the viewport height */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+#firefly {
+  position: fixed;
+  width: 250px; /* Adjust based on your images */
+  transition: transform 0.3s ease-in-out; /* Smooth transition for the movement */
+  z-index: 10;
+}
+
+.hidden {
+  display: none;
+}
+
+
+</style>
+</head>
+<body>
+  <section class="section" id="section1">
+    <h1>Section 1</h1>
+</section>
+<section class="section" id="section2">
+    <h1>Section 2</h1>
+</section>
+
+<img src="img/firefly1.png" alt="Firefly" id="firefly" class="hidden">
+
+  
+
+<script>
+document.addEventListener('scroll', function() {
+    const firefly = document.getElementById('firefly');
+    const windowHeight = window.innerHeight;
+    const scrollY = window.scrollY;
+    const totalHeight = document.body.scrollHeight - windowHeight;
+    const scrollPercentage = scrollY / totalHeight;
+
+    // Images for the firefly's wings flapping
+    const fireflyImage1 = "img/firefly1.png";
+    const fireflyImage2 = "img/firefly2.png";
+
+    // Toggle images to simulate flapping
+    firefly.src = scrollY % 2 === 0 ? fireflyImage1 : fireflyImage2;
+
+    // Calculate the Bezier curve position
+    const x = Math.sin(scrollPercentage * Math.PI) * 100; // Horizontal movement multiplier
+    const y = scrollPercentage * (windowHeight / 2); // Vertical movement from section 1 center to section 2 header
+
+    // Apply the calculated position
+    firefly.style.transform = `translate(${x}px, ${y}px)`;
+
+    // Show the firefly if hidden
+    firefly.classList.remove('hidden');
+});
+
+</script>
+</body>
+</html>
